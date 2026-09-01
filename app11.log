@@ -1,0 +1,9 @@
+2026-08-31 01:59:33,744 DEBUG __main__:39: Viewing hotels; 24X7 availability filter=False
+2026-08-31 01:59:33,744 DEBUG __main__:35: Fetching all hotels from CSV
+2026-08-31 01:59:40,264 DEBUG __main__:56: Attempting to book hotel id=2
+2026-08-31 01:59:40,265 DEBUG __main__:75: Checking availability for hotel id=2
+2026-08-31 01:59:40,268 DEBUG __main__:78: hotel_ids->[1, 2] and id -> 2
+2026-08-31 01:59:40,268 DEBUG __main__:81: Hotel id=2 is available
+2026-08-31 01:59:40,268 DEBUG __main__:69: Fetching details for hotel id=2
+2026-08-31 01:59:40,270 DEBUG __main__:49: Updating hotel id=2 availability to no
+2026-08-31 01:59:40,273 INFO __main__:63: Hotel id=2 booked successfully

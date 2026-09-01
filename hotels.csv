@@ -1,0 +1,5 @@
+id,name,city,pincode,availability,24X7,pernightprice,capacity
+1,A,Bangalore,5600045,yes,yes,3500,4
+2,B,Chennai,5600125,no,yes,2500,6
+3,C,Hyderabad,3300111,no,no,7500,2
+4,D,Kerala,1100125,no,yes,9500,4

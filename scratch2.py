@@ -1,0 +1,6 @@
+if 0.1+0.2 ==0.3:
+    print("yes")
+else:
+    print("no") 
+    print(0.1+0.2)
+    print(0.3)

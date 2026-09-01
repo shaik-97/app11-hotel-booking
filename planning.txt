@@ -1,0 +1,13 @@
+user can  view list of hotels
+users can book hotels from the list of hotels
+user can make payment via cash or online
+users can reserve hotels
+users can cancel their hotels booking
+
+classes:-
+user
+hotel
+cash payment
+online payment(card,upi)
+reservation
+CancelBookings
