@@ -1,6 +1,5 @@
 # hotel booking app
 import logging
-
 import pandas as pd
 
 
@@ -25,49 +24,50 @@ class Customer(User):
     #     self.loyalty_points += points
     #     log.debug("Added %s loyalty points to user %s", points, self.name)
 
-df = pd.read_csv("hotels.csv")
+df = pd.read_csv("hotels.csv").squeeze()
 class Hotel:
-    def __init__(self, hotel_id=None):
-        self.id = hotel_id
+    def __init__(self, hotel_id=None,is_availability_24x7=False):
+        self.hotel_id = hotel_id
         self.name = df[df["id"] == hotel_id]["name"]
+        self.is_availability_24x7 = is_availability_24x7
 
     def get_all_hotels(self):
         log.debug("Fetching all hotels from CSV")
         return pd.read_csv("hotels.csv")
 
-    def view_hotels(self, is_availability_24x7):
-        log.debug("Viewing hotels; 24X7 availability filter=%s", is_availability_24x7)
+    def view_hotels(self,):
+        log.debug("Viewing hotels; 24X7 availability filter=%s", self.is_availability_24x7)
         hotels_list = self.get_all_hotels()
-        if is_availability_24x7:
+        if self.is_availability_24x7:
             print(" Please find list of below hotels which are available 24X7 ")
             hotels_avail_24x7 = hotels_list[
                 (hotels_list["24X7"] == 'yes') | (hotels_list["24X7"] == 'YES') | (hotels_list["24X7"] == 'Yes')]
-            print(hotels_avail_24x7)
-        print(hotels_list)
+            print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n',hotels_avail_24x7,'\n')
 
-    def updated_hotel_list(self, hotel_id):
-        log.debug("Updating hotel id=%s availability to no", hotel_id)
+    def updated_hotel_list(self,):
+        log.debug("Updating hotel id=%s availability to no", self.hotel_id)
         df = pd.read_csv("hotels.csv")
-        df.loc[df["id"] == hotel_id, "availability"] = "no"
+        df.loc[df["id"] == self.hotel_id, "availability"] = "no"
         df.to_csv("hotels.csv", index=False) # False bcz we don't want index column to be added in csv file 
-        #print(f'updated list of hotels :- {df}')
+        print(f'updated list of hotels :- {df}')
+        return
 
-    def book_hotel(self, hotel_id):
-        log.debug("Attempting to book hotel id=%s", hotel_id)
-        if self.is_hotel_id_available(hotel_id):
-            hotel_details = self.fetch_hotel_details(hotel_id)
+    def book_hotel(self,):
+        log.debug("Attempting to book hotel id=%s", self.hotel_id)
+        if self.is_hotel_id_available(self.hotel_id):
+            hotel_details = self.fetch_hotel_details(self.hotel_id)
             f"""
             Hotel booked successfully! -> details : {hotel_details}
             """
-            self.updated_hotel_list(hotel_id)
-            log.info("Hotel id=%s booked successfully", hotel_id)
-            return
-        log.warning("Hotel id=%s booking unsuccessful or unavailable", hotel_id)
+            self.updated_hotel_list()
+            log.info("Hotel id=%s booked successfully", self.hotel_id)
+            return True
+        log.warning("Hotel id=%s booking unsuccessful or unavailable", self.hotel_id)
         print("Hotel booking unsuccessful")
 
     def fetch_hotel_details(self, id):
         log.debug("Fetching details for hotel id=%s", id)
-        df = pd.read_csv("hotels.csv")
+        # df = pd.read_csv("hotels.csv")
         hotel_details = df[df["id"] == id].iloc[0].to_dict()
         return  hotel_details
 
@@ -85,6 +85,9 @@ class Hotel:
 
 
 class ReserveTickets:
+    def __init__(self, hotel):
+        self.hotel = hotel
+        
     def generate_tickets(self):
         pass
 
@@ -93,18 +96,25 @@ class Payment:
         pass
     def online_payment(self):
         pass
+
 class Welcome:
     def welcome_user(self):
-        print("--- Welcome to Agoda Hotel Booking ---")
-
-
-
+        print("--- Welcome to Agoda Hotel Booking ---\n\n")
 
 def main():
-    hotel = Hotel()
-    hotel.view_hotels(is_availability_24x7=False)
-    hotel_booking_id = int(input(" Enter hotel id for booking: "))
-    hotel.book_hotel(hotel_booking_id)
+    welcome = Welcome()
+    welcome.welcome_user()
+    print(df.to_string(index=False),'\n\n')
+    hotel_booking_id = int(input(" Enter hotel id for booking:"))
+    hotel = Hotel(hotel_booking_id,is_availability_24x7=True)
+    hotel.view_hotels()
+    if hotel.book_hotel():
+        log.debug("Hotel booking successful for id=%s", hotel_booking_id)
+        ticket = ReserveTickets(hotel)
+        ticket.generate_tickets()
+    else:
+        log.debug("Hotel booking unsuccessful for id=%s", hotel_booking_id)
+
 
 if __name__ == "__main__":
     main()
