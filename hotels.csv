@@ -1,5 +1,5 @@
-id,name,city,pincode,availability,24X7,pernightprice,capacity
-1,A,Bangalore,5600045,no,yes,3500,4
-2,B,Chennai,5600125,yes,yes,2500,6
-3,C,Hyderabad,3300111,yes,no,7500,2
-4,D,Kerala,1100125,yes,yes,9500,4
+id,name,city,pincode,availability,24X7,pernightprice,capacity,spa
+1,A,Bangalore,5600045,yes,yes,3500,4,no
+2,B,Chennai,5600125,yes,yes,2500,6,yes
+3,C,Hyderabad,3300111,yes,no,7500,2,yes
+4,D,Kerala,1100125,yes,yes,9500,4,no

@@ -31,6 +31,14 @@ class Hotel:
         self.price = df.loc[df["id"] == self.hotel_id, "pernightprice"].values[0] if not df[df["id"] == self.hotel_id].empty else None
         self.is_availability_24x7 = is_availability_24x7
 
+    def validate_hotel_id(self):
+        log.debug("Validating hotel id=%s", self.hotel_id)
+        if self.hotel_id in df["id"].values:
+            log.debug("Hotel id=%s is valid", self.hotel_id)
+            return True
+        log.debug("Hotel id=%s is invalid", self.hotel_id)
+        return False
+    
     def get_all_hotels(self):
         log.debug("Fetching all hotels from CSV")
         return pd.read_csv("hotels.csv")
@@ -40,8 +48,7 @@ class Hotel:
         hotels_list = self.get_all_hotels()
         if self.is_availability_24x7:
             print(" Please find list of below hotels which are available 24X7 ")
-            hotels_avail_24x7 = hotels_list[
-                (hotels_list["24X7"] == 'yes') | (hotels_list["24X7"] == 'YES') | (hotels_list["24X7"] == 'Yes')]
+            hotels_avail_24x7 = hotels_list[(hotels_list["24X7"].str.lower() == 'yes')]
             print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n',hotels_avail_24x7,'\n')
 
     def updated_hotel_list(self,):
@@ -80,6 +87,27 @@ class Hotel:
         df.to_csv("hotels.csv", index=False)
         print("All hotels are now available for booking.")
 
+class SpaHotel(Hotel):
+    def __init__(self, hotel_id=None,):
+        super().__init__(hotel_id)
+        self.spa_available = df.loc[df["id"] == self.hotel_id, "spa"].values[0] if not df[df["id"] == self.hotel_id].empty else None
+
+    def view_spa_hotels(self,):
+        log.debug("Viewing spa hotels;",)
+        h = Hotel()
+        spa_hotels_list = h.get_all_hotels()
+        print(" Please find list of below spa hotels which are available 24X7 ")
+        hotels_avail_spa = spa_hotels_list[
+            (spa_hotels_list["spa"].str.lower() == 'yes')]
+        print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n',hotels_avail_spa,'\n')
+
+class SpaReservation:
+    def __init__(self, hotel):
+        self.hotel = hotel # this is Hotel object sent from main
+
+    def generate_reservation(self):
+        print(f"Reservation generated for hotel id={self.hotel.hotel_id}, name={self.hotel.name}, city={self.hotel.hotel_city}, price={self.hotel.price}")
+
 class ReserveTickets:
     def __init__(self, hotel):
         self.hotel = hotel
@@ -93,7 +121,7 @@ class Payment:
     def do_process(self):
         log.debug("Processing payment of amount %s", self.amount)
         print(f"Payment of amount {self.amount} processed successfully.")
-        return True    
+        return True
         
     def payment_receipt(self):
         log.debug("please find the payment receipt for the amount %s", self.amount)
@@ -120,8 +148,7 @@ class CreditCardPayment(Payment):
             return True
         log.debug("Credit card validation failed for holder_name=%s", self.holder_name)
         return False
-
-        
+    
 class Welcome:
     def welcome_user(self):
         print("--- Welcome to Agoda Hotel Booking ---\n\n")
@@ -136,10 +163,28 @@ def main():
 
     print(df.to_string(index=False),'\n\n')
     hotel_booking_id = input(" Enter hotel id for booking:")
+    validate_hotel_id = SpaHotel(hotel_booking_id).validate_hotel_id()
+    # this above line will pass booking id to parent class hotel.
+        # Python first runs Hotel.__init__() which initializes parent attributes and then initializes the child attributes in SpaHotel.__init__().
+    if not validate_hotel_id:
+        print(f"Invalid hotel id={hotel_booking_id}. Please enter a valid hotel id.")
+        log.debug("Invalid hotel id=%s entered by user", hotel_booking_id)
+        return
+    spa = input(" Do you want to view spa hotels? (yes/no): ")
+    if spa.lower() == "yes":
+        log.debug("User chose to view spa hotels; hotel_booking_id=%s", hotel_booking_id)
+        spa_hotel = SpaHotel(hotel_booking_id)
+        spa_hotel.view_spa_hotels()
+
     hotel = Hotel(hotel_booking_id,is_availability_24x7=True)
     hotel.make_all_hotels_available()  # Reset availability for testing purposes
     hotel.view_hotels()
     creditcard = CreditCardPayment(amount=8889, number=1234, exp="12/26", cvv=111, holder_name="DESH")
+    if spa.lower() == "yes":
+        spa_reservation = SpaReservation(spa_hotel)
+        spa_reservation.generate_reservation()
+    else:
+        print("You chose not to view spa hotels.")
     if creditcard.validate_Card():
         creditcard.do_process()
         creditcard.payment_receipt()
@@ -152,7 +197,6 @@ def main():
             log.debug("Hotel booking unsuccessful for id=%s", hotel_booking_id)
     else:
         print("Credit card validation failed. Cannot proceed with booking.")
-
 
 if __name__ == "__main__":
     main()
