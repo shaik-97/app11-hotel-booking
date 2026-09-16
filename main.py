@@ -157,6 +157,8 @@ df = pd.read_csv("hotels.csv",dtype={"id": str,"availability": str, "24X7": str}
 df_card = pd.read_csv("cards.csv").to_dict(orient='records')  # Convert to list of dictionaries for easier comparison
 print(df_card,'\n')
 
+
+
 def main():
     welcome = Welcome()
     welcome.welcome_user()

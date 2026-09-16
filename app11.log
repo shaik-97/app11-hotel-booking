@@ -1,10 +1,23 @@
-2026-09-02 00:32:48,704 DEBUG __main__:39: Viewing hotels; 24X7 availability filter=True
-2026-09-02 00:32:48,705 DEBUG __main__:35: Fetching all hotels from CSV
-2026-09-02 00:32:48,716 DEBUG __main__:56: Attempting to book hotel id=1
-2026-09-02 00:32:48,716 DEBUG __main__:75: Checking availability for hotel id=1
-2026-09-02 00:32:48,717 DEBUG __main__:78: hotel_ids->[1, 2, 3, 4] and id -> 1
-2026-09-02 00:32:48,717 DEBUG __main__:81: Hotel id=1 is available
-2026-09-02 00:32:48,717 DEBUG __main__:69: Fetching details for hotel id=1
-2026-09-02 00:32:48,718 DEBUG __main__:48: Updating hotel id=1 availability to no
-2026-09-02 00:32:48,728 INFO __main__:63: Hotel id=1 booked successfully
-2026-09-02 00:32:48,729 DEBUG __main__:112: Hotel booking successful for id=1
+2026-09-02 22:57:30,638 DEBUG __main__:35: Validating hotel id=1
+2026-09-02 22:57:30,638 DEBUG __main__:37: Hotel id=1 is valid
+2026-09-02 22:57:32,514 DEBUG __main__:173: User chose to view spa hotels; hotel_booking_id=1
+2026-09-02 22:57:32,519 DEBUG __main__:96: Viewing spa hotels;
+2026-09-02 22:57:32,519 DEBUG __main__:43: Fetching all hotels from CSV
+2026-09-02 22:57:32,531 DEBUG __main__:84: Making all hotels available
+2026-09-02 22:57:32,534 DEBUG __main__:47: Viewing hotels; 24X7 availability filter=True
+2026-09-02 22:57:32,534 DEBUG __main__:43: Fetching all hotels from CSV
+2026-09-02 22:57:32,544 DEBUG __main__:146: Credit card validated successfully for holder_name=DESH
+2026-09-02 22:57:32,544 DEBUG __main__:122: Processing payment of amount 8889
+2026-09-02 22:57:32,544 DEBUG __main__:127: please find the payment receipt for the amount 8889
+2026-09-02 22:57:32,544 DEBUG __main__:63: Attempting to book hotel id=1
+2026-09-02 22:57:32,544 DEBUG __main__:73: Checking availability for hotel id=1
+2026-09-02 22:57:32,545 DEBUG __main__:75: hotel_ids->['1', '2', '3', '4'] and id -> 1
+2026-09-02 22:57:32,545 DEBUG __main__:78: Hotel id=1 is available
+2026-09-02 22:57:32,545 DEBUG __main__:65: Hotel booked successfully! -> details : 
+ hotel_id-->1 
+ hotel_name-->A 
+ hotel_city-->Bangalore 
+ hotel_price-->3500
+2026-09-02 22:57:32,545 DEBUG __main__:55: Updating hotel id=1 availability to no
+2026-09-02 22:57:32,550 INFO __main__:67: Hotel id=1 booked successfully
+2026-09-02 22:57:32,550 DEBUG __main__:191: Hotel booking successful for id=1
